@@ -28,7 +28,7 @@ fn main() {
                 .at(percent(35), percent(50)),
         )
         .add_systems(Startup, setup)
-        .add_systems(FixedUpdate, integrate)
+        .add_systems(FixedUpdate, (apply_gravity, collide, integrate).chain())
         .run();
 }
 
@@ -43,8 +43,8 @@ fn setup(
         Mesh3d(meshes.add(Sphere::new(0.5))),
         MeshMaterial3d(blockout_material.clone()),
         Transform::from_xyz(0.0, 1.5, 0.0),
-        Shape::sphere(1.0),
-        Body::new(0.5),
+        Shape::sphere(0.5),
+        Body::new(1.0),
     ));
 
     commands.spawn((
@@ -76,4 +76,3 @@ fn setup(
         Transform::from_xyz(-5.0, 5.0, 7.5).looking_at(vec3(0.0, 0.5, 0.0), Vec3::Y),
     ));
 }
-
